@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog Posts - TAS-Final-Exam{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Blog Posts</h1>
+        <p class="lead">Explore our articles on web application security</p>
+    </div>
+</div>
+
+<div class="container">
+    {% if g.user %}
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form action="{{ url_for('search') }}" method="get" class="d-flex">
+                <input type="text" name="q" class="form-control me-2" placeholder="Search posts...">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-9">
+            {% if posts %}
+                {% for post in posts %}
+                <div class="card mb-4">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            {% if post.image_path %}
+                            <img src="{{ url_for('static', filename=post.image_path) }}" class="img-fluid rounded-start h-100 object-fit-cover" alt="{{ post.title }}">
+                            {% else %}
+                            <div class="bg-secondary text-white d-flex align-items-center justify-content-center h-100" style="min-height: 200px;">
+                                <i class="fas fa-image fa-3x"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="card-text text-muted small">
+                                    <i class="fas fa-user me-1"></i> {{ post.username }} |
+                                    <i class="fas fa-calendar me-1"></i> {{ post.created_at[:10] }} |
+                                    <i class="fas fa-folder me-1"></i> {{ post.category }}
+                                </p>
+                                <p class="card-text">{{ post.summary }}</p>
+                                <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">
+                    <p>No posts found.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Categories</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">Security</a>
+                    <a href="#" class="list-group-item list-group-item-action">Development</a>
+                    <a href="#" class="list-group-item list-group-item-action">Cloud</a>
+                    <a href="#" class="list-group-item list-group-item-action">Networking</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">About</h5>
+                </div>
+                <div class="card-body">
+                    <p>This blog focuses on cybersecurity topics, vulnerabilities, and secure coding practices. Learn from our experts and improve your security knowledge.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

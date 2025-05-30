@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - TAS-Final-Exam{% endblock %}
+
+{% block head %}
+<style>
+    .profile-section {
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        border-radius: 50%;
+        margin-right: 1.5rem;
+    }
+
+    .profile-info h1 {
+        margin-bottom: 0.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>My Profile</h1>
+        <p class="lead">Manage your account information</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="profile-section">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-info">
+                <h1>{{ g.user.username }}</h1>
+                <p class="text-muted mb-0">{{ g.user.role }}</p>
+                {% if g.user.username == 'flag' %}
+                <div class="alert alert-success mt-3">
+                    <h4 class="alert-heading">Congratulations!</h4>
+                    <p>You've found the first flag: {{ g.user.bio }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Personal Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" value="{{ g.user.username }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="full_name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="full_name" value="{{ g.user.full_name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="bio" class="form-label">Bio</label>
+                                <textarea class="form-control" id="bio" rows="3">{{ g.user.bio }}</textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" disabled>Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Contact Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="emailForm">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" value="{{ g.user.email }}">
+                                <input type="hidden" id="user_id" value="{{ g.user.id }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone" value="{{ g.user.phone }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" value="{{ g.user.address }}">
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label for="city" class="form-label">City</label>
+                                    <input type="text" class="form-control" id="city" value="{{ g.user.city }}">
+                                </div>
+                                <div class="col">
+                                    <label for="country" class="form-label">Country</label>
+                                    <input type="text" class="form-control" id="country" value="{{ g.user.country }}">
+                                </div>
+                            </div>
+                            <button type="button" id="updateEmailBtn" class="btn btn-primary">Update Email</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Professional Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="company" class="form-label">Company</label>
+                                <input type="text" class="form-control" id="company" value="{{ g.user.company }}">
+                            </div>
+                            <button type="button" class="btn btn-primary" disabled>Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="responseContainer" class="alert alert-success" style="display: none;"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('updateEmailBtn').addEventListener('click', function() {
+        const userId = document.getElementById('user_id').value;
+        const email = document.getElementById('email').value;
+        
+        // IDOR vulnerability - using user_id without proper authorization
+        fetch('/profile/update_email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_id: userId,
+                email: email
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const responseContainer = document.getElementById('responseContainer');
+            responseContainer.style.display = 'block';
+            
+            if (data.error) {
+                responseContainer.className = 'alert alert-danger';
+                responseContainer.innerHTML = `<strong>Error:</strong> ${data.error}`;
+            } else {
+                responseContainer.className = 'alert alert-success';
+                responseContainer.innerHTML = `<strong>Success:</strong> Email updated successfully!`;
+                
+                // Vẫn lưu thông tin user vào console để debugging
+                console.log('Updated user info:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const responseContainer = document.getElementById('responseContainer');
+            responseContainer.style.display = 'block';
+            responseContainer.className = 'alert alert-danger';
+            responseContainer.innerHTML = `<strong>Error:</strong> An unexpected error occurred.`;
+        });
+    });
+</script>
+{% endblock %} 

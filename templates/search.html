@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - TAS-Final-Exam{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Search Results</h1>
+        <p class="lead">Finding the information you need</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form action="{{ url_for('search') }}" method="get" class="d-flex">
+                <input type="text" name="q" class="form-control me-2" placeholder="Search posts..." value="{{ query }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger">
+        <h4 class="alert-heading">Error in search query</h4>
+        <p>{{ error }}</p>
+        <hr>
+        <p class="mb-0">Try modifying your search query.</p>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-9">
+            {% if posts %}
+                <h2 class="mb-4">Found {{ posts|length }} result{% if posts|length != 1 %}s{% endif %} for "{{ query }}"</h2>
+                {% for post in posts %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.summary }}</p>
+                        <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                {% if query %}
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">No results found</h4>
+                    <p>Your search for "{{ query }}" did not match any posts.</p>
+                    <hr>
+                    <p class="mb-0">Try different keywords or browse all posts.</p>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">Enter a search query</h4>
+                    <p>Use the search box above to find posts.</p>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Search Tips</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><i class="fas fa-search me-2"></i> Use specific keywords</li>
+                        <li class="mb-2"><i class="fas fa-search me-2"></i> Try SQL injection like: ' OR 1=1 --</li>
+                        <li class="mb-2"><i class="fas fa-search me-2"></i> Search by author</li>
+                        <li><i class="fas fa-search me-2"></i> Use partial words</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Popular Categories</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">Security</a>
+                    <a href="#" class="list-group-item list-group-item-action">Development</a>
+                    <a href="#" class="list-group-item list-group-item-action">Cloud</a>
+                    <a href="#" class="list-group-item list-group-item-action">Networking</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

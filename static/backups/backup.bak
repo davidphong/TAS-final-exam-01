@@ -1,0 +1,134 @@
+[
+    {
+        "username": "admin",
+        "email": "admin@tas.com",
+        "password_hash": "7f050750485aaf47c7d54c7b61e0c55a",
+        "role": "admin"
+    },
+    {
+        "username": "flag",
+        "email": "flag@tas.com",
+        "password_hash": "6596a387530ccd28b6424561deadb36f",
+        "role": "user"
+    },
+    {
+        "username": "user1",
+        "email": "user1@tas.com",
+        "password_hash": "7c6a180b36896a0a8c02787eeafb0e4c",
+        "role": "user"
+    },
+    {
+        "username": "user2",
+        "email": "user2@tas.com",
+        "password_hash": "6cb75f652a9b52798eb6cf2201057c73",
+        "role": "user"
+    },
+    {
+        "username": "user3",
+        "email": "user3@tas.com",
+        "password_hash": "819b0643d6b89dc9b579fdfc9094f28e",
+        "role": "user"
+    },
+    {
+        "username": "user4",
+        "email": "user4@tas.com",
+        "password_hash": "34cc93ece0ba9e3f6f235d4af979b16c",
+        "role": "user"
+    },
+    {
+        "username": "user5",
+        "email": "user5@tas.com",
+        "password_hash": "db0edd04aaac4506f7edab03ac855d56",
+        "role": "user"
+    },
+    {
+        "username": "user6",
+        "email": "user6@tas.com",
+        "password_hash": "218dd27aebeccecae69ad8408d9a36bf",
+        "role": "user"
+    },
+    {
+        "username": "user7",
+        "email": "user7@tas.com",
+        "password_hash": "00cdb7bb942cf6b290ceb97d6aca64a3",
+        "role": "user"
+    },
+    {
+        "username": "user8",
+        "email": "user8@tas.com",
+        "password_hash": "b25ef06be3b6948c0bc431da46c2c738",
+        "role": "user"
+    },
+    {
+        "username": "user9",
+        "email": "user9@tas.com",
+        "password_hash": "5d69dd95ac183c9643780ed7027d128a",
+        "role": "user"
+    },
+    {
+        "username": "user10",
+        "email": "user10@tas.com",
+        "password_hash": "87e897e3b54a405da144968b2ca19b45",
+        "role": "user"
+    },
+    {
+        "username": "user11",
+        "email": "user11@tas.com",
+        "password_hash": "1e5c2776cf544e213c3d279c40719643",
+        "role": "user"
+    },
+    {
+        "username": "user12",
+        "email": "user12@tas.com",
+        "password_hash": "c24a542f884e144451f9063b79e7994e",
+        "role": "user"
+    },
+    {
+        "username": "user13",
+        "email": "user13@tas.com",
+        "password_hash": "ee684912c7e588d03ccb40f17ed080c9",
+        "role": "user"
+    },
+    {
+        "username": "user14",
+        "email": "user14@tas.com",
+        "password_hash": "8ee736784ce419bd16554ed5677ff35b",
+        "role": "user"
+    },
+    {
+        "username": "user15",
+        "email": "user15@tas.com",
+        "password_hash": "9141fea0574f83e190ab7479d516630d",
+        "role": "user"
+    },
+    {
+        "username": "user16",
+        "email": "user16@tas.com",
+        "password_hash": "2b40aaa979727c43411c305540bbed50",
+        "role": "user"
+    },
+    {
+        "username": "user17",
+        "email": "user17@tas.com",
+        "password_hash": "a63f9709abc75bf8bd8f6e1ba9992573",
+        "role": "user"
+    },
+    {
+        "username": "user18",
+        "email": "user18@tas.com",
+        "password_hash": "80b8bdceb474b5127b6aca386bb8ce14",
+        "role": "user"
+    },
+    {
+        "username": "user19",
+        "email": "user19@tas.com",
+        "password_hash": "e532ae6f28f4c2be70b500d3d34724eb",
+        "role": "user"
+    },
+    {
+        "username": "user20",
+        "email": "user20@tas.com",
+        "password_hash": "aee67d9bb569ad1562f7b67cfccbd2ef",
+        "role": "user"
+    }
+]

@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Panel - TAS-Final-Exam{% endblock %}
+
+{% block head %}
+<style>
+    .admin-section {
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .tools-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .tool-card {
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .tool-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tool-icon {
+        width: 60px;
+        height: 60px;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+    }
+    
+    #fetchResult {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        background-color: #f8f9fa;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+    
+    #fetchResultContent {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Admin Panel</h1>
+        <p class="lead">Manage your blog and system settings</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="admin-section">
+        <h2 class="mb-4">Admin Tools</h2>
+        
+        <div class="tools-container">
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-rss"></i>
+                </div>
+                <h4>Article Fetcher</h4>
+                <p>Fetch articles from external sources to create new blog posts.</p>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fetcherModal">
+                    Open Tool
+                </button>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4>User Management</h4>
+                <p>Manage user accounts, roles, and permissions.</p>
+                <button type="button" class="btn btn-primary" disabled>
+                    Open Tool
+                </button>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h4>Analytics</h4>
+                <p>View website traffic, user engagement, and performance metrics.</p>
+                <button type="button" class="btn btn-primary" disabled>
+                    Open Tool
+                </button>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h4>System Settings</h4>
+                <p>Configure system settings, backups, and maintenance tasks.</p>
+                <button type="button" class="btn btn-primary" disabled>
+                    Open Tool
+                </button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">System Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Server Status</h5>
+                        <p><i class="fas fa-circle text-success me-2"></i> All systems operational</p>
+                        <p><strong>Last Backup:</strong> 2023-10-15 08:30:45</p>
+                        <p><strong>Environment:</strong> Production</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Statistics</h5>
+                        <p><strong>Total Users:</strong> 22</p>
+                        <p><strong>Total Posts:</strong> 5</p>
+                        <p><strong>Total Comments:</strong> 0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Article Fetcher Modal (SSRF Vulnerable) -->
+<div class="modal fade" id="fetcherModal" tabindex="-1" aria-labelledby="fetcherModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fetcherModalLabel">Article Fetcher</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Enter a URL to fetch content from external sources. The content will be retrieved and can be used to create new blog posts.</p>
+                
+                <form id="fetcherForm">
+                    <div class="mb-3">
+                        <label for="fetchUrl" class="form-label">URL to Fetch</label>
+                        <input type="text" class="form-control" id="fetchUrl" placeholder="https://example.com/article">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Fetch Content</button>
+                </form>
+                
+                <div id="fetchResult" style="display: none;">
+                    <h5>Fetched Content:</h5>
+                    <div id="fetchResultContent"></div>
+                </div>
+                
+                <div id="fetchError" class="alert alert-danger mt-3" style="display: none;"></div>
+                <div id="fetchSuccess" class="alert alert-success mt-3" style="display: none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="createPostBtn" style="display: none;">Create Post from Content</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('fetcherForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const url = document.getElementById('fetchUrl').value.trim();
+        
+        if (!url) {
+            document.getElementById('fetchError').textContent = 'Please enter a URL';
+            document.getElementById('fetchError').style.display = 'block';
+            return;
+        }
+        
+        // Reset UI
+        document.getElementById('fetchError').style.display = 'none';
+        document.getElementById('fetchSuccess').style.display = 'none';
+        document.getElementById('fetchResult').style.display = 'none';
+        document.getElementById('createPostBtn').style.display = 'none';
+        
+        // Show loading indicator
+        document.getElementById('fetchSuccess').textContent = 'Fetching content...';
+        document.getElementById('fetchSuccess').style.display = 'block';
+        
+        // SSRF vulnerability - no validation of URL
+        fetch('/admin/fetch', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `url=${encodeURIComponent(url)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('fetchSuccess').style.display = 'none';
+            
+            if (data.error) {
+                document.getElementById('fetchError').textContent = data.error;
+                document.getElementById('fetchError').style.display = 'block';
+            } else {
+                document.getElementById('fetchResult').style.display = 'block';
+                document.getElementById('createPostBtn').style.display = 'inline-block';
+                
+                if (data.content_type && data.content_type.includes('application/json')) {
+                    try {
+                        const jsonData = JSON.parse(data.content);
+                        document.getElementById('fetchResultContent').innerHTML = `<pre>${JSON.stringify(jsonData, null, 2)}</pre>`;
+                    } catch (e) {
+                        document.getElementById('fetchResultContent').textContent = data.content;
+                    }
+                } else if (data.file_url) {
+                    document.getElementById('fetchResultContent').innerHTML = `
+                        <div class="alert alert-success">
+                            <p>File downloaded successfully!</p>
+                            <p><a href="${data.file_url}" target="_blank">View Downloaded File</a></p>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('fetchResultContent').innerHTML = data.content;
+                }
+                
+                document.getElementById('fetchSuccess').textContent = 'Content fetched successfully!';
+                document.getElementById('fetchSuccess').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            document.getElementById('fetchSuccess').style.display = 'none';
+            document.getElementById('fetchError').textContent = 'An error occurred while fetching the content';
+            document.getElementById('fetchError').style.display = 'block';
+            console.error('Error:', error);
+        });
+    });
+</script>
+{% endblock %} 

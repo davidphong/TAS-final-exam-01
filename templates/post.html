@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - TAS-Final-Exam{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('posts') }}">Blog</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ post.title }}</li>
+                </ol>
+            </nav>
+
+            <article class="blog-post">
+                <h1 class="mb-3">{{ post.title }}</h1>
+                
+                <div class="d-flex text-muted mb-4">
+                    <span class="me-3"><i class="fas fa-user me-1"></i> {{ post.username }}</span>
+                    <span class="me-3"><i class="fas fa-calendar me-1"></i> {{ post.created_at[:10] }}</span>
+                    <span><i class="fas fa-folder me-1"></i> {{ post.category }}</span>
+                </div>
+                
+                {% if post.image_path %}
+                <div class="mb-4">
+                    <img src="{{ url_for('static', filename=post.image_path) }}" class="img-fluid rounded" alt="{{ post.title }}">
+                </div>
+                {% endif %}
+                
+                <div class="blog-content mb-5">
+                    {{ post.content|safe }}
+                </div>
+            </article>
+
+            <section class="comments-section">
+                <h3 class="mb-4">Comments ({{ comments|length }})</h3>
+                
+                {% if g.user %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Leave a comment</h5>
+                        <form action="{{ url_for('add_comment', post_id=post.id) }}" method="post">
+                            <div class="mb-3">
+                                <textarea class="form-control" name="content" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info mb-4">
+                    <p class="mb-0">Please <a href="{{ url_for('login') }}">login</a> to leave a comment.</p>
+                </div>
+                {% endif %}
+
+                {% if comments %}
+                    {% for comment in comments %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <h6 class="card-subtitle"><i class="fas fa-user me-1"></i> {{ comment.username }}</h6>
+                                <small class="text-muted"><i class="fas fa-calendar me-1"></i> {{ comment.created_at[:10] }}</small>
+                            </div>
+                            <p class="card-text">{{ comment.content }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-light">
+                        <p class="mb-0">No comments yet. Be the first to comment!</p>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">About the Author</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h5 class="mb-0">{{ post.username }}</h5>
+                    </div>
+                    <p>Security expert and contributor to the TAS-Final-Exam platform. Specializes in web application security and vulnerability research.</p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Related Posts</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">SQL Injection Prevention</h6>
+                        </div>
+                        <small class="text-muted">Security</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">CSRF Token Implementation</h6>
+                        </div>
+                        <small class="text-muted">Development</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">XSS Attack Vectors</h6>
+                        </div>
+                        <small class="text-muted">Security</small>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Tags</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="#" class="badge bg-primary text-decoration-none">Security</a>
+                        <a href="#" class="badge bg-secondary text-decoration-none">Web</a>
+                        <a href="#" class="badge bg-success text-decoration-none">Flask</a>
+                        <a href="#" class="badge bg-danger text-decoration-none">Vulnerability</a>
+                        <a href="#" class="badge bg-warning text-dark text-decoration-none">Authentication</a>
+                        <a href="#" class="badge bg-info text-dark text-decoration-none">OWASP</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}TAS-Final-Exam - Home{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1>Welcome to TAS-Final-Exam</h1>
+                <p class="lead">Learn about web application security through practical examples</p>
+                {% if not g.user %}
+                <div class="mt-4">
+                    <a href="{{ url_for('login') }}" class="btn btn-light me-2">Login</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-4 text-center">
+                <i class="fas fa-shield-alt fa-7x text-light opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <section class="mb-5">
+        <h2 class="mb-4">Latest Blog Posts</h2>
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if post.image_path %}
+                    <img src="{{ url_for('static', filename=post.image_path) }}" class="card-img-top" alt="{{ post.title }}">
+                    {% else %}
+                    <div class="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 180px;">
+                        <i class="fas fa-image fa-3x"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text text-muted small">
+                            <i class="fas fa-user me-1"></i> {{ post.username }} |
+                            <i class="fas fa-calendar me-1"></i> {{ post.created_at[:10] }} |
+                            <i class="fas fa-folder me-1"></i> {{ post.category }}
+                        </p>
+                        <p class="card-text">{{ post.summary }}</p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-sm btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">About This Platform</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p>This platform is designed to help you learn about web application security through practical examples. It contains several intentionally vulnerable features that simulate real-world security issues.</p>
+                        <p>Your challenge is to identify and exploit these vulnerabilities to find the hidden flags.</p>
+                        <p>Remember, the skills you learn here should only be applied to systems you have permission to test!</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="list-group">
+                            <div class="list-group-item bg-light">
+                                <h5 class="mb-1">Learning Topics</h5>
+                            </div>
+                            <div class="list-group-item">Information Disclosure</div>
+                            <div class="list-group-item">SQL Injection</div>
+                            <div class="list-group-item">Broken Access Control</div>
+                            <div class="list-group-item">Server-Side Request Forgery</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="mb-4">Security Categories</h2>
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-bug fa-3x mb-3 text-danger"></i>
+                        <h5 class="card-title">Vulnerability Research</h5>
+                        <p class="card-text">Discover and analyze security vulnerabilities in applications.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-code fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">Secure Coding</h5>
+                        <p class="card-text">Learn techniques to write secure and robust code.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-lock fa-3x mb-3 text-success"></i>
+                        <h5 class="card-title">Authentication</h5>
+                        <p class="card-text">Implement secure user authentication systems.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shield-alt fa-3x mb-3 text-warning"></i>
+                        <h5 class="card-title">Defense in Depth</h5>
+                        <p class="card-text">Apply multiple layers of security controls.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %} 
