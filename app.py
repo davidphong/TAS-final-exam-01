@@ -58,9 +58,7 @@ def init_db():
     
     # Insert flags if they don't exist
     flags = [
-        ('FLAG1', 'TAS{1nf0rm4t10n_d1scl0sur3_l34ds_t0_4cc0unt_t4k30v3r}'),
-        ('FLAG2', 'TAS{SQL_1nj3ct10n_vuln3r4b1l1ty_3xpl01t3d}'),
-        ('FLAG3', 'TAS{IDOR_vuln3r4b1l1ty_l34ds_t0_pr1v1l3g3_3sc4l4t10n}')
+        ('FLAG2', 'TAS{SQL_1nj3ct10n_vuln3r4b1l1ty_3xpl01t3d}')
     ]
     
     for flag_name, flag_value in flags:
